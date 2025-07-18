@@ -195,6 +195,28 @@ function initializeFormValidation() {
                 }
             });
         });
+
+        // Phone number specific validation
+        const phoneFields = form.querySelectorAll('input[name="Phone"]');
+        phoneFields.forEach(field => {
+            field.addEventListener('input', function(e) {
+                // Remove non-numeric characters
+                this.value = this.value.replace(/\D/g, '');
+                
+                // Limit to 10 digits
+                if (this.value.length > 10) {
+                    this.value = this.value.slice(0, 10);
+                }
+            });
+
+            field.addEventListener('blur', function() {
+                if (this.value.length > 0 && this.value.length !== 10) {
+                    showFieldError(this, 'Phone number must be exactly 10 digits');
+                } else if (this.value.length === 10) {
+                    clearFieldError(this);
+                }
+            });
+        });
     });
 }
 

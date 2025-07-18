@@ -73,9 +73,11 @@
                                 <span class="input-group-text">
                                     <i class="fas fa-phone"></i>
                                 </span>
-                                <input asp-for="Phone" class="form-control" placeholder="Enter phone number" />
+                                <input asp-for="Phone" class="form-control" placeholder="Enter 10-digit phone number" 
+                                       pattern="[0-9]{10}" maxlength="10" title="Phone number must be exactly 10 digits" />
                             </div>
                             <span asp-validation-for="Phone" class="text-danger"></span>
+                            <small class="form-text text-muted">Enter exactly 10 digits (e.g., 1234567890)</small>
                         </div>
 
                         <div class="col-md-6 mb-3">

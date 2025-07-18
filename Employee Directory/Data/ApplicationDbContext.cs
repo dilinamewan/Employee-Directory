@@ -25,7 +25,7 @@ namespace Employee_Directory.Data
                 entity.Property(e => e.Email).IsRequired().HasMaxLength(100);
                 entity.Property(e => e.Position).IsRequired().HasMaxLength(50);
                 entity.Property(e => e.Department).IsRequired().HasMaxLength(50);
-                entity.Property(e => e.Phone).IsRequired().HasMaxLength(20);
+                entity.Property(e => e.Phone).IsRequired().HasMaxLength(10); // Exactly 10 digits
                 entity.Property(e => e.HireDate).IsRequired();
 
                 // Create index for better search performance
