@@ -64,14 +64,4 @@
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
-    <script>
-        // Reset button state on page load
-        document.addEventListener('DOMContentLoaded', function() {
-            const submitButton = document.querySelector('button[type="submit"]');
-            if (submitButton && (submitButton.innerHTML.includes('Loading...') || submitButton.disabled)) {
-                submitButton.disabled = false;
-                submitButton.innerHTML = '<i class="fas fa-sign-in-alt me-2"></i>Login';
-            }
-        });
-    </script>
 }

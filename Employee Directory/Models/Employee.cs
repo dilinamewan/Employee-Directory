@@ -26,8 +26,8 @@ namespace Employee_Directory.Models
         public string Department { get; set; } = string.Empty;
 
         [Required(ErrorMessage = "Phone number is required")]
-        [RegularExpression(@"^\d{10}$", ErrorMessage = "Phone number must contain exactly 10 digits")]
-        [Display(Name = "Phone Number")]
+        [Phone(ErrorMessage = "Please enter a valid phone number")]
+        [StringLength(10, ErrorMessage = "Phone number must contain 10 digits")]
         public string Phone { get; set; } = string.Empty;
 
         [Required(ErrorMessage = "Hire Date is required")]

@@ -115,44 +115,13 @@ function initializeTooltips() {
 
 // Loading states
 function initializeLoadingStates() {
-    // Reset any buttons that might be stuck in loading state
-    const loadingButtons = document.querySelectorAll('button[type="submit"]');
-    loadingButtons.forEach(button => {
-        if (button.innerHTML.includes('Loading...')) {
-            showButtonLoading(button, false);
-        }
-    });
-
     // Add loading spinner to buttons
     const submitButtons = document.querySelectorAll('button[type="submit"]');
 
     submitButtons.forEach(button => {
-        button.addEventListener('click', function (e) {
-            // Don't show loading if there are validation errors
-            const form = this.form;
-            if (form) {
-                // Check for validation errors in the form
-                const hasErrors = form.querySelector('.field-validation-error, .text-danger') !== null;
-                const hasValidationSummary = form.querySelector('.validation-summary-errors') !== null;
-                
-                if (!hasErrors && !hasValidationSummary) {
-                    // Small delay to allow form submission to process
-                    setTimeout(() => {
-                        if (form.checkValidity()) {
-                            showButtonLoading(this, true);
-                        }
-                    }, 100);
-                }
-            }
-        });
-    });
-
-    // Reset loading state when page loads (in case of validation errors)
-    window.addEventListener('load', function() {
-        const buttons = document.querySelectorAll('button[type="submit"]');
-        buttons.forEach(button => {
-            if (button.innerHTML.includes('Loading...') || button.disabled) {
-                showButtonLoading(button, false);
+        button.addEventListener('click', function () {
+            if (this.form && this.form.checkValidity()) {
+                showButtonLoading(this, true);
             }
         });
     });
@@ -191,28 +160,6 @@ function initializeFormValidation() {
 
             field.addEventListener('input', function() {
                 if (this.value.trim()) {
-                    clearFieldError(this);
-                }
-            });
-        });
-
-        // Phone number specific validation
-        const phoneFields = form.querySelectorAll('input[name="Phone"]');
-        phoneFields.forEach(field => {
-            field.addEventListener('input', function(e) {
-                // Remove non-numeric characters
-                this.value = this.value.replace(/\D/g, '');
-                
-                // Limit to 10 digits
-                if (this.value.length > 10) {
-                    this.value = this.value.slice(0, 10);
-                }
-            });
-
-            field.addEventListener('blur', function() {
-                if (this.value.length > 0 && this.value.length !== 10) {
-                    showFieldError(this, 'Phone number must be exactly 10 digits');
-                } else if (this.value.length === 10) {
                     clearFieldError(this);
                 }
             });
