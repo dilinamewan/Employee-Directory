@@ -12,14 +12,11 @@ document.addEventListener('DOMContentLoaded', function () {
     // Initialize tooltips
     initializeTooltips();
 
-    // Initialize loading states
-    initializeLoadingStates();
-
-    // Initialize form validation
-    initializeFormValidation();
-
     // Initialize smooth scrolling
     initializeSmoothScrolling();
+
+    // Simplified form handling - no interference with ASP.NET Core validation
+    initializeSimpleFormHandling();
 });
 
 // Animation initialization
@@ -113,111 +110,30 @@ function initializeTooltips() {
     }
 }
 
-// Loading states
-function initializeLoadingStates() {
-    // Add loading spinner to buttons
-    const submitButtons = document.querySelectorAll('button[type="submit"]');
-
-    submitButtons.forEach(button => {
-        button.addEventListener('click', function () {
-            if (this.form && this.form.checkValidity()) {
-                showButtonLoading(this, true);
-            }
-        });
-    });
-}
-
-// Show button loading state
-function showButtonLoading(button, show) {
-    if (show) {
-        const originalText = button.innerHTML;
-        button.dataset.originalText = originalText;
-        button.disabled = true;
-        button.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Loading...';
-    } else {
-        button.disabled = false;
-        button.innerHTML = button.dataset.originalText || button.innerHTML;
-    }
-}
-
-// Enhanced form validation
-function initializeFormValidation() {
+// Simplified form handling - no interference with validation
+function initializeSimpleFormHandling() {
+    // Just add basic visual feedback, don't prevent submission
     const forms = document.querySelectorAll('form');
-
+    
     forms.forEach(form => {
-        // Only add visual feedback, don't prevent submission
-        // Let ASP.NET Core handle the actual validation
-        const requiredFields = form.querySelectorAll('[required]');
-        
-        requiredFields.forEach(field => {
-            field.addEventListener('blur', function() {
-                if (!this.value.trim()) {
-                    showFieldError(this, 'This field is required');
-                } else {
-                    clearFieldError(this);
+        const submitButton = form.querySelector('button[type="submit"]');
+        if (submitButton) {
+            form.addEventListener('submit', function() {
+                // Simple loading state with timeout
+                if (submitButton) {
+                    const originalText = submitButton.innerHTML;
+                    submitButton.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Loading...';
+                    submitButton.disabled = true;
+                    
+                    // Reset after 15 seconds as fallback
+                    setTimeout(() => {
+                        submitButton.innerHTML = originalText;
+                        submitButton.disabled = false;
+                    }, 15000);
                 }
             });
-
-            field.addEventListener('input', function() {
-                if (this.value.trim()) {
-                    clearFieldError(this);
-                }
-            });
-        });
-    });
-}
-
-// Show field error
-function showFieldError(field, message) {
-    field.classList.add('is-invalid');
-
-    let errorDiv = field.parentNode.querySelector('.invalid-feedback');
-    if (!errorDiv) {
-        errorDiv = document.createElement('div');
-        errorDiv.className = 'invalid-feedback';
-        field.parentNode.appendChild(errorDiv);
-    }
-
-    errorDiv.textContent = message;
-}
-
-// Clear field error
-function clearFieldError(field) {
-    field.classList.remove('is-invalid');
-    const errorDiv = field.parentNode.querySelector('.invalid-feedback');
-    if (errorDiv) {
-        errorDiv.remove();
-    }
-}
-
-// Show notification
-function showNotification(message, type = 'info') {
-    const alertClass = type === 'error' ? 'alert-danger' : `alert-${type}`;
-    const notification = document.createElement('div');
-    notification.className = `alert ${alertClass} alert-dismissible fade show`;
-    notification.innerHTML = `
-        ${message}
-        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-    `;
-
-    // Add notification styles
-    notification.style.cssText = `
-        position: fixed;
-        top: 20px;
-        right: 20px;
-        z-index: 1050;
-        max-width: 400px;
-        animation: slideInRight 0.3s ease-out;
-    `;
-
-    document.body.appendChild(notification);
-
-    // Auto-remove after 5 seconds
-    setTimeout(() => {
-        if (notification.parentNode) {
-            notification.remove();
         }
-    }, 5000);
+    });
 }
 
 // Smooth scrolling for anchor links

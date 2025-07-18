@@ -474,6 +474,99 @@ body {
     outline-offset: 2px;
 }
 
+/* Dashboard Styles */
+.dashboard-stats {
+    background: white;
+    border-radius: var(--border-radius-lg);
+    padding: 1.5rem;
+    box-shadow: var(--shadow-lg);
+}
+
+.stats-card {
+    padding: 1rem;
+}
+
+.stat-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+    background: white;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-sm);
+    transition: var(--transition);
+}
+
+.stat-item:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+.stat-icon {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 1.5rem;
+}
+
+.stat-content h3 {
+    font-size: 2rem;
+    font-weight: 700;
+    margin: 0;
+    color: var(--dark-text);
+}
+
+.stat-content p {
+    margin: 0;
+    color: var(--light-text);
+    font-size: 0.875rem;
+}
+
+.recent-employees {
+    background: #f8f9fa;
+    border-radius: var(--border-radius);
+    padding: 1rem;
+}
+
+.recent-employee-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.recent-employee-item:last-child {
+    border-bottom: none;
+}
+
+.employee-avatar {
+    width: 40px;
+    height: 40px;
+    background: var(--primary-color);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+}
+
+.employee-info .employee-name {
+    font-weight: 600;
+    color: var(--dark-text);
+    font-size: 0.875rem;
+}
+
+.employee-info .employee-details {
+    color: var(--light-text);
+    font-size: 0.75rem;
+}
+
 /* Print Styles */
 @media print {
     .navbar, .footer, .btn, .alert {

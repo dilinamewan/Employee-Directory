@@ -41,11 +41,52 @@ builder.Services.ConfigureApplicationCookie(options =>
 
 var app = builder.Build();
 
+// Ensure database is created
+using (var scope = app.Services.CreateScope())
+{
+    var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+    context.Database.EnsureCreated();
+    
+    // Seed sample data if no employees exist
+    if (!context.Employees.Any())
+    {
+        var sampleEmployees = new List<Employee>
+        {
+            new Employee
+            {
+                FullName = "Ajith",
+                Email = "ajith@company.com",
+                Position = "Software Engineer",
+                Department = "IT",
+                Phone = "1234567890",
+                HireDate = DateTime.Now.AddYears(-2)
+            },
+            new Employee
+            {
+                FullName = "Mewan",
+                Email = "mewan@gmail.com",
+                Position = "Project Manager",
+                Department = "IT",
+                Phone = "0987654321",
+                HireDate = DateTime.Now.AddYears(-1)
+            },
+           
+        };
+        
+        context.Employees.AddRange(sampleEmployees);
+        context.SaveChanges();
+    }
+}
+
 // Configure the HTTP request pipeline
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
     app.UseHsts();
+}
+else
+{
+    app.UseDeveloperExceptionPage();
 }
 
 app.UseHttpsRedirection();

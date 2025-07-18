@@ -5,7 +5,7 @@ using Employee_Directory.Data;
 using Employee_Directory.Models;
 using Employee_Directory.Models.ViewModels;
 
-namespace Employees_Directory.Controllers
+namespace Employee_Directory.Controllers
 {
     [Authorize] // Require authentication for all actions in this controller
     public class EmployeeController : Controller
@@ -88,6 +88,19 @@ namespace Employees_Directory.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Employee employee)
         {
+            _logger.LogInformation("Create POST method called for employee: {EmployeeName}", employee.FullName);
+            _logger.LogInformation("ModelState.IsValid: {IsValid}", ModelState.IsValid);
+
+            if (!ModelState.IsValid)
+            {
+                _logger.LogWarning("Model validation failed for employee creation");
+                foreach (var error in ModelState)
+                {
+                    _logger.LogWarning("Key: {Key}, Errors: {Errors}", error.Key, string.Join(", ", error.Value.Errors.Select(e => e.ErrorMessage)));
+                }
+                return View(employee);
+            }
+
             if (ModelState.IsValid)
             {
                 try

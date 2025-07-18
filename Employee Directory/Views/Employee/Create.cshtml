@@ -13,7 +13,8 @@
                 </h3>
             </div>
             <div class="card-body p-4">
-                <form asp-action="Create" method="post">
+                <form asp-action="Create" asp-controller="Employee" method="post">
+                    @Html.AntiForgeryToken()
                     <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
 
                     <div class="row">
@@ -71,7 +72,7 @@
                                 <span class="input-group-text">
                                     <i class="fas fa-phone"></i>
                                 </span>
-                                <input asp-for="Phone" class="form-control" placeholder="Enter phone number" />
+                                <input asp-for="Phone" class="form-control" placeholder="Enter 10-digit phone number" maxlength="10" pattern="[0-9]{10}" />
                             </div>
                             <span asp-validation-for="Phone" class="text-danger"></span>
                         </div>
