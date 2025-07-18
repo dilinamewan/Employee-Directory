@@ -27,7 +27,7 @@ namespace Employee_Directory.Models
 
         [Required(ErrorMessage = "Phone number is required")]
         [Phone(ErrorMessage = "Please enter a valid phone number")]
-        [StringLength(20, ErrorMessage = "Phone number cannot exceed 20 characters")]
+        [StringLength(10, ErrorMessage = "Phone number must contain 10 digits")]
         public string Phone { get; set; } = string.Empty;
 
         [Required(ErrorMessage = "Hire Date is required")]
