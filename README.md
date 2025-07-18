@@ -41,14 +41,16 @@ dotnet restore
 ```
 
 ### 3. Update Database Connection String
-Update the connection string in `appsettings.json` if needed:
+Update the connection string in `appsettings.json` with your SQL Server Management Studio server name:
 ```json
 {
   "ConnectionStrings": {
-    "DefaultConnection": "Server=(localdb)\\mssqllocaldb;Database=EmployeeDirectoryDb;Trusted_Connection=true;MultipleActiveResultSets=true"
+    "DefaultConnection": "Server=YOUR_SQL_SERVER_NAME;Database=EmployeeDirectoryDb;Trusted_Connection=true;TrustServerCertificate=Yes"
   }
 }
 ```
+
+**Note**: Replace `YOUR_SQL_SERVER_NAME` with your actual SQL Server Management Studio server name (e.g., `DESKTOP-60VHJM3`, `localhost`, `.\SQLEXPRESS`, etc.).
 
 ### 4. Apply Database Migrations
 ```bash
