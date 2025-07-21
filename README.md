@@ -22,12 +22,32 @@ A modern employee management system built with ASP.NET Core MVC and Entity Frame
 - **Fonts**: Google Fonts (Inter)
   
 ## User Interface
--**Home**
+**Home Page**
 <img width="1918" height="978" alt="image" src="https://github.com/user-attachments/assets/a73ce3c1-7333-4dbd-b3a1-0f671bc40e5b" />
 
--**Home**
+**Register Page**
+<img width="1908" height="981" alt="image" src="https://github.com/user-attachments/assets/a108fe99-c890-4c27-bc7d-c922e2d04cc3" />
 
+**Login Page**
+<img width="1912" height="983" alt="image" src="https://github.com/user-attachments/assets/51429af5-90bb-4c0f-8105-c890a18eb164" />
 
+**Home Page After Login**
+<img width="1917" height="971" alt="image" src="https://github.com/user-attachments/assets/5ab40f00-493b-4a91-b883-8916f6840313" />
+
+**Employee Page**
+<img width="1891" height="967" alt="image" src="https://github.com/user-attachments/assets/581bf506-708e-45e8-bb13-c41d88c6fb24" />
+
+**Employee Details Page**
+<img width="1915" height="976" alt="image" src="https://github.com/user-attachments/assets/93beb6f0-dcb5-4cc7-a617-6c4c1f657f93" />
+
+**Employee Edit Page**
+<img width="1916" height="966" alt="image" src="https://github.com/user-attachments/assets/4530f5b0-3210-4a84-84ec-52682d0a1c36" />
+
+**Employee Delete Page**
+<img width="1917" height="941" alt="image" src="https://github.com/user-attachments/assets/69923021-5c99-4f60-98e1-9d00dccfc5fa" />
+
+**Add New Employee Page**
+<img width="1912" height="975" alt="image" src="https://github.com/user-attachments/assets/85616819-51e1-464d-9d19-e30f1b523c75" />
 
 ## Prerequisites
 
