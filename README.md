@@ -149,8 +149,9 @@ Employee Directory/
 ## Sample Data
 
 The application automatically seeds sample employee data on first run:
-- Ajith (Software Engineer, IT Department)
-- Mewan (Project Manager, IT Department)
+- Dilina Mewan (Software Engineer, IT Department)
+- Thushara Dulshan (Project Manager, IT Department)
+- Malinda Tanuj (HR Manager, Human Resources)
 
 ## Security Features
 
