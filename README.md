@@ -20,6 +20,14 @@ A modern employee management system built with ASP.NET Core MVC and Entity Frame
 - **Frontend**: HTML5, CSS3, JavaScript, Bootstrap 5
 - **Icons**: Font Awesome
 - **Fonts**: Google Fonts (Inter)
+  
+## User Interface
+-**Home**
+<img width="1918" height="978" alt="image" src="https://github.com/user-attachments/assets/a73ce3c1-7333-4dbd-b3a1-0f671bc40e5b" />
+
+-**Home**
+
+
 
 ## Prerequisites
 
