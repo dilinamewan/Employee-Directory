@@ -1,3 +1,18 @@
+/**
+ * Main entry point for the Employee Directory ASP.NET Core application.
+ * 
+ * This file configures all essential services including:
+ * - Database connectivity with Entity Framework Core
+ * - ASP.NET Core Identity for user authentication and authorization
+ * - Cookie-based authentication and session management
+ * - MVC controllers and views
+ * - HTTP request pipeline and middleware
+ * - Initial data seeding for development
+ * 
+ * The application follows the minimal hosting model introduced in .NET 6+
+ * which provides a cleaner and more streamlined way to configure applications.
+ */
+
 using Employee_Directory.Data;
 using Employee_Directory.Models;
 using Microsoft.AspNetCore.Identity;
@@ -5,49 +20,68 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container
+// ================================================================
+// SERVICE CONFIGURATION
+// Configure all services needed by the application
+// ================================================================
+
+// Add support for MVC pattern with controllers and views
 builder.Services.AddControllersWithViews();
 
-// Configure Entity Framework with SQL Server
+// Configure Entity Framework with SQL Server database
+// Connection string is read from appsettings.json
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-// Configure ASP.NET Core Identity
+// Configure ASP.NET Core Identity for user authentication and authorization
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
 {
-    // Password settings - you can customize these as needed
-    options.Password.RequireDigit = true;
-    options.Password.RequiredLength = 6;
-    options.Password.RequireNonAlphanumeric = false;
-    options.Password.RequireUppercase = false;
-    options.Password.RequireLowercase = false;
+    // Password requirements - configured for user-friendly development
+    // In production, consider strengthening these requirements
+    options.Password.RequireDigit = true;           // At least one number (0-9)
+    options.Password.RequiredLength = 6;            // Minimum 6 characters
+    options.Password.RequireNonAlphanumeric = false; // No special characters required
+    options.Password.RequireUppercase = false;      // No uppercase letters required
+    options.Password.RequireLowercase = false;      // No lowercase letters required
 
-    // User settings
-    options.User.RequireUniqueEmail = true;
-    options.SignIn.RequireConfirmedEmail = false;
+    // User account settings
+    options.User.RequireUniqueEmail = true;         // Each email can only have one account
+    options.SignIn.RequireConfirmedEmail = false;   // Allow login without email confirmation
 })
-.AddEntityFrameworkStores<ApplicationDbContext>()
-.AddDefaultTokenProviders();
+.AddEntityFrameworkStores<ApplicationDbContext>()  // Use EF Core for Identity data storage
+.AddDefaultTokenProviders();                       // Add token providers for password resets, etc.
 
-// Configure cookie settings
+// Configure authentication cookie settings
 builder.Services.ConfigureApplicationCookie(options =>
 {
-    options.LoginPath = "/Account/Login";
-    options.LogoutPath = "/Account/Logout";
-    options.AccessDeniedPath = "/Account/AccessDenied";
-    options.ExpireTimeSpan = TimeSpan.FromMinutes(30);
-    options.SlidingExpiration = true;
+    // Define authentication-related paths
+    options.LoginPath = "/Account/Login";           // Where to redirect for login
+    options.LogoutPath = "/Account/Logout";         // Where to redirect for logout  
+    options.AccessDeniedPath = "/Account/AccessDenied"; // Where to redirect when access is denied
+    
+    // Session and security settings
+    options.ExpireTimeSpan = TimeSpan.FromMinutes(30); // Cookie expires after 30 minutes of inactivity
+    options.SlidingExpiration = true;                   // Reset expiration time on each request
 });
 
 var app = builder.Build();
 
-// Ensure database is created
+// ================================================================
+// DATABASE INITIALIZATION AND DATA SEEDING
+// Ensure database exists and has initial data for development/demo
+// ================================================================
+
+// Create a service scope to access database services during startup
 using (var scope = app.Services.CreateScope())
 {
     var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+    
+    // Ensure the database exists and is created with the current schema
+    // In production, use proper database migrations instead
     context.Database.EnsureCreated();
     
-    // Seed sample data if no employees exist
+    // Seed additional sample data if no employees exist beyond the seeded data
+    // This provides extra demo data for development and testing purposes
     if (!context.Employees.Any())
     {
         var sampleEmployees = new List<Employee>
@@ -59,7 +93,7 @@ using (var scope = app.Services.CreateScope())
                 Position = "Software Engineer",
                 Department = "IT",
                 Phone = "1234567890",
-                HireDate = DateTime.Now.AddYears(-2)
+                HireDate = DateTime.Now.AddYears(-2) // Hired 2 years ago
             },
             new Employee
             {
@@ -68,38 +102,51 @@ using (var scope = app.Services.CreateScope())
                 Position = "Project Manager",
                 Department = "IT",
                 Phone = "0987654321",
-                HireDate = DateTime.Now.AddYears(-1)
+                HireDate = DateTime.Now.AddYears(-1) // Hired 1 year ago
             },
            
         };
         
+        // Add the sample employees to the database
         context.Employees.AddRange(sampleEmployees);
         context.SaveChanges();
     }
 }
 
-// Configure the HTTP request pipeline
+// ================================================================
+// HTTP REQUEST PIPELINE CONFIGURATION
+// Configure middleware in the correct order for request processing
+// ================================================================
+
+// Configure different error handling based on environment
 if (!app.Environment.IsDevelopment())
 {
-    app.UseExceptionHandler("/Home/Error");
-    app.UseHsts();
+    // Production error handling - user-friendly error pages
+    app.UseExceptionHandler("/Home/Error");  // Generic error page for unhandled exceptions
+    app.UseHsts();                           // HTTP Strict Transport Security for HTTPS enforcement
 }
 else
 {
-    app.UseDeveloperExceptionPage();
+    // Development error handling - detailed error information for debugging
+    app.UseDeveloperExceptionPage();         // Shows detailed error information with stack traces
 }
 
-app.UseHttpsRedirection();
-app.UseStaticFiles();
+// Security and static file middleware
+app.UseHttpsRedirection();                   // Redirect HTTP requests to HTTPS
+app.UseStaticFiles();                        // Serve static files (CSS, JS, images) from wwwroot
 
+// Routing middleware - enable routing for controllers and actions
 app.UseRouting();
 
-// Authentication & Authorization middleware
-app.UseAuthentication();
-app.UseAuthorization();
+// Authentication and authorization middleware (order is important!)
+app.UseAuthentication();                     // Identify who the user is (login status)
+app.UseAuthorization();                      // Determine what the user can access (permissions)
 
+// Configure the default MVC route pattern
+// This enables conventional routing: /Controller/Action/Id
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{controller=Home}/{action=Index}/{id?}");  // Default to Home/Index if no route specified
 
+// Start the application and begin listening for HTTP requests
 app.Run();
